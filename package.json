@@ -1,0 +1,39 @@
+{
+  "name": "live-ladder",
+  "productName": "Live Ladder",
+  "version": "1.0.0",
+  "description": "Broadcast-quality live AFL ladder monitor for game day",
+  "main": "main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "host:start": "node cloud/server.js",
+    "test": "electron . --test",
+    "demo": "electron . --demo",
+    "icon": "electron scripts/make-icon.js",
+    "selftest": "node scripts/selftest.js",
+    "livecheck": "electron scripts/livecheck.js",
+    "dist": "electron-builder --win"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.4.11"
+  },
+  "build": {
+    "appId": "cc.liveladder.app",
+    "productName": "Live Ladder",
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "files": [
+      "main/**/*",
+      "renderer/**/*",
+      "build/icon.*",
+      "package.json"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: live-ladder-overlay
+    runtime: node
+    buildCommand: npm install
+    startCommand: node cloud/server.js
+    healthCheckPath: /health
+    envVars:
+      - key: LIVE_LADDER_TOKEN
+        generateValue: true
