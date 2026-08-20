@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';" />
+  <title>Live Ladder</title>
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/source.css" />
+  <link rel="stylesheet" href="css/live.css" />
+</head>
+<body>
+  <div class="shell">
+
+    <header class="topbar">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <rect class="bm-bar bm-1" x="7" y="41" width="35" height="9" rx="4.5" />
+          <rect class="bm-bar bm-2" x="7" y="27" width="35" height="9" rx="4.5" />
+          <rect class="bm-bar bm-3" x="7" y="13" width="35" height="9" rx="4.5" />
+          <circle class="bm-ring" cx="50" cy="17.5" r="9" />
+          <circle class="bm-dot" cx="50" cy="17.5" r="4" />
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">LIVE LADDER</span>
+          <span class="brand-sub" id="brand-sub">GAME DAY CONTROL</span>
+        </div>
+      </div>
+
+      <nav class="tabs" id="tabs">
+        <button class="tab" data-view="source">SOURCE</button>
+        <button class="tab is-active" data-view="live">LIVE</button>
+      </nav>
+
+      <div class="status-cluster">
+        <div class="live-pill" id="live-pill">
+          <span class="live-dot"></span>
+          <span class="live-label">STANDBY</span>
+          <span class="live-age" id="live-age"></span>
+        </div>
+        <button class="theme-btn" id="theme-toggle" type="button" title="Switch colour mode">LIGHT</button>
+        <button class="icon-btn" id="fullscreen-btn" title="Full screen (F11)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="views">
+
+      <!-- ============================ SOURCE ============================ -->
+      <section class="view" id="view-source">
+        <div class="view-head">
+          <div>
+            <h1>Source control</h1>
+            <p class="view-sub">Connect each game's live scoring feed. Sources keep running in the background while you are on LIVE.</p>
+          </div>
+          <div class="view-head-actions">
+            <button class="btn btn-primary" id="connect-all">CONNECT ALL</button>
+            <button class="btn btn-test" id="test-mode">TEST MODE</button>
+            <label class="field-inline">
+              <span>Round</span>
+              <input type="text" id="round-label" placeholder="ROUND 19" maxlength="24" />
+            </label>
+            <label class="field-inline">
+              <span>Poll</span>
+              <select id="poll-interval">
+                <option value="3000">3s</option>
+                <option value="5000">5s</option>
+                <option value="8000">8s</option>
+                <option value="12000">12s</option>
+                <option value="20000">20s</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="ladder-setup source-ladder-setup">
+          <div class="paste-panel">
+            <textarea id="ladder-paste" spellcheck="false" placeholder="#&#9;Team&#10;1&#9;Chelsea FNC Senior Men&#10;2&#9;Somerville FNC Senior Men&#10;…&#10;&#10;P&#9;PTS&#9;%&#9;W&#9;L&#9;D&#9;BYE&#9;F&#9;A&#10;18&#9;60&#9;176.62&#9;15&#9;3&#9;0&#9;0&#9;2017&#9;1142&#10;…"></textarea>
+            <div class="paste-actions">
+              <button class="btn btn-ghost" id="ladder-preview-btn">CHECK PASTE</button>
+              <button class="btn btn-primary" id="ladder-save-btn">LOAD LADDER</button>
+            </div>
+            <div class="paste-feedback" id="ladder-feedback"></div>
+          </div>
+
+          <div class="preview-panel">
+            <div class="preview-head">
+              <span>Parsed ladder</span>
+              <span id="preview-count"></span>
+            </div>
+            <div class="preview-table" id="ladder-preview"></div>
+          </div>
+        </div>
+        <div class="source-grid" id="source-grid"></div>
+      </section>
+
+      <!-- ============================= LIVE ============================= -->
+      <section class="view is-active" id="view-live">
+        <div class="live-layout">
+
+          <div class="ladder-panel">
+            <div class="panel-head">
+              <div class="panel-title-block">
+                <h2>LIVE LADDER</h2>
+              </div>
+              <div class="panel-head-meta" id="ladder-head-meta"></div>
+            </div>
+            <div class="ladder-columns">
+              <span class="lc lc-pos">#</span>
+              <span class="lc lc-team">CLUB</span>
+              <span class="lc lc-pts">PTS</span>
+              <span class="lc lc-pct">%</span>
+              <span class="lc lc-num">P</span>
+              <span class="lc lc-num">W</span>
+              <span class="lc lc-num">L</span>
+              <span class="lc lc-num">D</span>
+            </div>
+            <div class="ladder-rows" id="ladder-rows"></div>
+            <div class="ladder-empty" id="ladder-empty">
+              <p>No ladder loaded</p>
+              <span>Paste the ladder entering the round on the SOURCE tab.</span>
+            </div>
+          </div>
+
+          <aside class="side-panel">
+            <div class="games-panel">
+              <div class="panel-head">
+                <div class="panel-title-block">
+                  <h2>LIVE GAMES</h2>
+                </div>
+                <div class="panel-head-meta" id="games-head-meta"></div>
+              </div>
+              <div class="game-cards" id="game-cards"></div>
+            </div>
+
+            <div class="side-resizer" id="updates-resizer" role="separator" aria-label="Resize updates panel" tabindex="0"></div>
+
+            <div class="log-panel">
+              <div class="panel-head">
+                <div class="panel-title-block">
+                  <h2>UPDATES</h2>
+                </div>
+                <button class="link-btn" id="clear-log">clear</button>
+              </div>
+              <div class="log-list" id="log-list"></div>
+            </div>
+          </aside>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="toast-stack" id="toast-stack"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

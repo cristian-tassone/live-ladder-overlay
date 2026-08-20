@@ -1,0 +1,369 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../assets/montserrat-regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../assets/montserrat-semibold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../assets/montserrat-semibold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 650;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../assets/montserrat-medium.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../assets/montserrat-bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --ink: #f4f7fb;
+  --muted: #8390a4;
+  --line: rgba(255,255,255,0.18);
+  --panel: rgba(7,10,17,0.88);
+  --row: rgba(19,25,36,0.92);
+  --accent: #2fd4ff;
+  --gold: #ffc24b;
+  --up: #21e08a;
+  --font: 'Montserrat', Bahnschrift, "DIN Alternate", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  width: 1920px;
+  height: 1080px;
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+}
+body { color: var(--ink); font-family: var(--font); font-stretch: condensed; font-synthesis: none; user-select: none; }
+
+.overlay {
+  position: absolute;
+  left: 72px;
+  top: 72px;
+  width: 460px;
+  padding: 0;
+  filter: drop-shadow(0 12px 28px rgba(0,0,0,0.4));
+}
+.overlay-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-bottom: 2px solid var(--accent);
+  border-radius: 8px 8px 0 0;
+}
+.overlay-brand { display: flex; align-items: center; gap: 9px; }
+.overlay-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--up); box-shadow: 0 0 10px rgba(33,224,138,0.8); }
+.overlay-kicker, .overlay-label { font-size: 13px; font-weight: 800; letter-spacing: 0.18em; }
+.overlay-label { color: var(--gold); font-size: 10px; }
+.overlay-columns, .overlay-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0,1fr) 62px 62px;
+  align-items: center;
+  gap: 10px;
+}
+.overlay-columns span:nth-child(n+3), .overlay-row span:nth-child(n+3) { text-align: right; }
+.overlay-rows { display: grid; gap: 2px; }
+.overlay-row {
+  min-height: 44px;
+  padding: 0 14px;
+  background: var(--row);
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: 6px;
+  transition: background 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+}
+.overlay-row.is-finals { border-left: 3px solid rgba(47,212,255,0.7); }
+.overlay-row.is-leader { border-left-color: var(--gold); }
+.overlay-row.moved { background: rgba(33,224,138,0.14); border-color: rgba(33,224,138,0.6); box-shadow: 0 0 22px rgba(33,224,138,0.18) inset; }
+.overlay-row span:first-child { color: var(--gold); font-size: 25px; font-weight: 800; }
+.overlay-row span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 25px; font-weight: 750; letter-spacing: 0.06em; }
+.overlay-row span:nth-child(3), .overlay-row span:nth-child(4) { font-size: 23px; font-weight: 750; font-variant-numeric: tabular-nums; }
+.overlay-row span:nth-child(4) { color: var(--muted); }
+.value-change { animation: valueChange 600ms ease-out; }
+@keyframes valueChange { 0% { transform: translateY(7px); opacity: 0.25; } 45% { transform: translateY(-2px); opacity: 1; } 100% { transform: none; opacity: 1; } }
+
+/* Selected-match AFL scorebug: Devon Meadows v Dromana */
+.scorebug {
+  position: absolute;
+  left: 72px;
+  top: 760px;
+  width: 620px;
+  filter: drop-shadow(0 12px 28px rgba(0,0,0,0.48));
+}
+.scorebug-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 42px;
+  padding: 0 18px;
+  color: #fff;
+  background: linear-gradient(100deg, #087da5 0%, #0c94bf 58%, #12627a 100%);
+  border-bottom: 3px solid #fff;
+  border-radius: 4px 4px 0 0;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+.scorebug-brand { display: flex; align-items: center; gap: 10px; }
+.scorebug-state { font-size: 13px; letter-spacing: 0.14em; }
+.scorebug-teams { display: grid; gap: 3px; }
+.scorebug-team {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 92px;
+  align-items: center;
+  min-height: 66px;
+  padding: 0 18px 0 10px;
+  color: #f6f8fb;
+  background: rgba(22,27,37,0.94);
+  border-left: 6px solid #4c5665;
+  transition: background 220ms ease, border-color 220ms ease;
+}
+.scorebug-team.home { border-left-color: #d51f2c; }
+.scorebug-team.away { border-left-color: #72b947; }
+.scorebug-team.leading { background: rgba(35,43,56,0.98); }
+.scorebug-team img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6));
+}
+.scorebug-team img.is-devon { mix-blend-mode: normal; border-radius: 5px; }
+.scorebug-name { font-size: 25px; font-weight: 800; letter-spacing: 0.035em; }
+.scorebug-score { text-align: right; font-size: 42px; line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; }
+.scorebug-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 6px 16px;
+  color: #fff;
+  background: rgba(8,12,18,0.9);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Reference-style live ladder graphic */
+.ladder-graphic {
+  position: absolute;
+  left: 72px;
+  top: 620px;
+  width: 300px;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.65));
+}
+.ladder-graphic-head {
+  display: grid;
+  grid-template-columns: 38px 44px minmax(0,1fr) 52px 60px;
+  align-items: center;
+  gap: 2px;
+  min-height: 42px;
+  padding: 0 8px 0 0;
+  color: #fff;
+  background: linear-gradient(90deg, #111824, #202b3a);
+  border-bottom: 3px solid #2fd4ff;
+  border-radius: 3px 3px 0 0;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+.ladder-graphic-brand { grid-column: 1 / 4; display: flex; align-items: center; gap: 10px; padding-left: 8px; }
+.ladder-graphic-head .overlay-live-dot {
+  width: 8px;
+  height: 8px;
+  animation: overlayDotPulse 2.8s ease-in-out infinite;
+}
+@keyframes overlayDotPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+.ladder-graphic-cols { display: contents; font-size: 15px; letter-spacing: 0; }
+.ladder-graphic-cols span { text-align: center; justify-self: center; }
+.ladder-graphic-rows { display: grid; gap: 0; perspective: 850px; perspective-origin: 50% 45%; }
+.ladder-graphic-row {
+  display: grid;
+  grid-template-columns: 38px 44px minmax(0,1fr) 52px 60px;
+  align-items: center;
+  gap: 2px;
+  min-height: 48px;
+  padding: 0 8px 0 0;
+  color: #f2f5fa;
+  background: rgba(24,29,39,0.97);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-left: 1px solid rgba(255,255,255,0.13);
+  border-radius: 2px;
+  border-bottom: 3px solid rgba(255,255,255,0.28);
+  transform-style: preserve-3d;
+  transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+.ladder-graphic-row.is-leader { border-left-color: rgba(255,255,255,0.13); }
+.ladder-graphic-row.is-selected {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.18);
+  box-shadow: 0 0 18px rgba(255,255,255,0.055) inset;
+}
+.ladder-graphic-row.is-selected > span:nth-child(3),
+.ladder-graphic-row.is-selected > span:nth-child(4),
+.ladder-graphic-row.is-selected > span:nth-child(5) { color: #ffffff; }
+.ladder-graphic-row.moved {
+  position: relative;
+  z-index: 3;
+  background: rgba(33,224,138,0.2);
+  border-color: #21e08a;
+  box-shadow: 0 0 28px rgba(33,224,138,0.48), 0 18px 30px rgba(0,0,0,0.34);
+  will-change: transform;
+}
+.ladder-graphic-row.is-cut-line { border-bottom: 4px solid #ed3340; }
+.ladder-graphic-row.is-selected-pair-line { border-top: 3px solid #05070a; }
+.ladder-graphic-row > span:first-child {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(5,9,16,0.95);
+  font-size: 21px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.ladder-graphic-row img {
+  width: 42px;
+  height: 42px;
+  padding: 2px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 3px;
+}
+.ladder-graphic-row img.is-missing { visibility: hidden; }
+.logo-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #111927;
+}
+.logo-cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid #fff;
+  border-radius: 3px;
+  pointer-events: none;
+}
+.logo-cell img { width: 38px; height: 38px; }
+.ladder-graphic-row:not(.is-rosebud) .logo-cell img { transform: scale(1.65); }
+.ladder-graphic-row.is-langwarrin .logo-cell img { transform: scale(2.35); }
+.ladder-graphic-row.is-dromana .logo-cell img { transform: scale(1.72); object-position: 50% 50%; }
+.ladder-graphic-row.is-devon .logo-cell img { transform: scale(1.65) translateX(3px); }
+.ladder-graphic-row.is-mteliza .logo-cell img { transform: scale(1.65) translateY(3px); }
+.logo-fallback { display: none; color: #182231; font-size: 11px; font-weight: 900; }
+.logo-cell:has(.is-missing) img { display: none; }
+.logo-cell:has(.is-missing) .logo-fallback { display: block; }
+.team-cell { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.team-cell > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ladder-graphic-row > span:nth-child(3) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+}
+.ladder-graphic-row > span:nth-child(4),
+.ladder-graphic-row > span:nth-child(5) {
+  text-align: center;
+  font-size: 21px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  height: 1.1em;
+  line-height: 1.1;
+  overflow: hidden;
+}
+.ladder-graphic-row > span:nth-child(4) { font-weight: 500; }
+.ladder-graphic-row > span:nth-child(5) { color: #9ba8ba; }
+.ticker-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+.percent-ticker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.018em;
+  font-variant-numeric: tabular-nums;
+}
+.digit-slot {
+  position: relative;
+  display: inline-block;
+  width: 0.57em;
+  height: 1.1em;
+  overflow: hidden;
+}
+.digit-slot.digit-punctuation { width: 0.28em; }
+.digit-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+.digit-in { animation: tickerIn 1050ms cubic-bezier(0.22, 1.02, 0.24, 1) both; }
+.digit-out { animation: tickerOut 1050ms cubic-bezier(0.22, 1.02, 0.24, 1) both; }
+.ticker-in { animation: tickerIn 1050ms cubic-bezier(0.22, 1.02, 0.24, 1) both; }
+.ticker-out { animation: tickerOut 1050ms cubic-bezier(0.22, 1.02, 0.24, 1) both; }
+@keyframes tickerIn {
+  from { transform: translateY(115%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes tickerOut {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-115%); opacity: 0; }
+}
+.move-indicator {
+  flex: 0 0 auto;
+  min-width: 27px;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-align: left;
+}
+.move-indicator.up { color: #21e08a; }
+.move-indicator.down { color: #ff8656; }
+.ladder-graphic-row.is-selected .move-indicator.up {
+  color: #25f29a;
+  text-shadow: 0 0 8px rgba(37,242,154,0.55);
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' http://127.0.0.1:17842;" />
+  <title>Live Ladder Overlay</title>
+  <link rel="stylesheet" href="css/overlay.css?v=20260820-4" />
+</head>
+<body>
+  <main class="ladder-graphic" aria-label="Live Ladder overlay">
+    <header class="ladder-graphic-head">
+      <div class="ladder-graphic-brand"><span class="overlay-live-dot"></span><span>LIVE LADDER</span></div>
+      <div class="ladder-graphic-cols"><span>PTS</span><span>%</span></div>
+    </header>
+    <section class="ladder-graphic-rows" id="overlay-rows"></section>
+  </main>
+  <script type="module" src="js/overlay.js"></script>
+</body>
+</html>
