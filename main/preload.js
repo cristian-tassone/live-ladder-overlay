@@ -32,6 +32,14 @@ contextBridge.exposeInMainWorld('api', {
   },
 
   clearLog: () => ipcRenderer.invoke('log:clear'),
+  overlay: {
+    toggle: () => ipcRenderer.invoke('overlay:toggle'),
+    onCommand: (handler) => {
+      const listener = (_e, command) => handler(command);
+      ipcRenderer.on('overlay-command', listener);
+      return () => ipcRenderer.removeListener('overlay-command', listener);
+    }
+  },
   toggleFullscreen: () => ipcRenderer.invoke('window:fullscreen'),
 
   onState: (handler) => {
