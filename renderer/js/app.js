@@ -81,6 +81,12 @@ async function init() {
   });
 
   $('#fullscreen-btn').addEventListener('click', () => window.api.toggleFullscreen());
+  $('#overlay-hide').addEventListener('click', async () => {
+    const hidden = await window.api.overlay.toggle();
+    const button = $('#overlay-hide');
+    button.textContent = hidden ? 'SHOW' : 'HIDE';
+    button.title = hidden ? 'Show the OBS overlay' : 'Hide the OBS overlay';
+  });
   applyTheme(localStorage.getItem('live-ladder-theme') || 'dark');
   $('#theme-toggle').addEventListener('click', () => {
     const next = document.body.dataset.theme === 'light' ? 'dark' : 'light';
