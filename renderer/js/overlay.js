@@ -160,6 +160,7 @@ function render(snapshot) {
     entry.el.classList.toggle('is-dromana', clean.includes('DROMANA'));
     entry.el.classList.toggle('is-devon', clean.includes('DEVON'));
     entry.el.classList.toggle('is-mteliza', clean.includes('ELIZA'));
+    entry.el.classList.toggle('is-ycw', abbreviation(row.display || row.name) === 'YCW');
     const delta = Number(row.delta || 0);
     entry.move.textContent = delta > 0 ? '▲' : delta < 0 ? '▼' : '';
     entry.move.className = `move-indicator ${delta > 0 ? 'up' : delta < 0 ? 'down' : ''}`;
