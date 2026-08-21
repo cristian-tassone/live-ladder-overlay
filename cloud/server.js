@@ -88,6 +88,16 @@ const server = http.createServer(async (req, res) => {
       return writeJson(res, 400, { error: error.message || 'Invalid JSON' });
     }
   }
+  if (url.pathname === '/command' && req.method === 'POST') {
+    if (!authorized(req)) return writeJson(res, 401, { error: 'Unauthorized' });
+    try {
+      const command = JSON.parse(await readBody(req));
+      broadcast({ command });
+      return writeJson(res, 200, { ok: true });
+    } catch (error) {
+      return writeJson(res, 400, { error: error.message || 'Invalid JSON' });
+    }
+  }
   if (url.pathname === '/events' && req.method === 'GET') {
     res.writeHead(200, {
       'Content-Type': 'text/event-stream; charset=utf-8',
