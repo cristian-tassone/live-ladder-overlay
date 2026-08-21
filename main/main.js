@@ -30,6 +30,7 @@ const overlayClients = new Set();
 const OVERLAY_PORT = 17842;
 const CLOUD_URL = String(process.env.LIVE_LADDER_CLOUD_URL || '').replace(/\/+$/, '');
 const CLOUD_TOKEN = String(process.env.LIVE_LADDER_CLOUD_TOKEN || '');
+let overlayHidden = false;
 /** @type {BrowserWindow|null} */
 /** @type {GameStore|null} */
 let games = null;
@@ -79,6 +80,14 @@ function broadcast(snapshot, events) {
   publishCloud(snapshot, events);
 }
 
+function broadcastOverlayCommand(command) {
+  if (win && !win.isDestroyed()) win.webContents.send('overlay-command', command);
+  const message = `data: ${JSON.stringify({ command })}\n\n`;
+  for (const client of overlayClients) {
+    try { client.write(message); } catch { overlayClients.delete(client); }
+  }
+}
+
 async function publishCloud(snapshot, events) {
   if (!CLOUD_URL || !CLOUD_TOKEN) return;
   try {
@@ -86,6 +95,19 @@ async function publishCloud(snapshot, events) {
       method: 'POST',
       headers: { Authorization: `Bearer ${CLOUD_TOKEN}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(snapshot)
+    });
+  } catch {
+    // The local app must continue operating if the hosted relay is unavailable.
+  }
+}
+
+async function publishCloudCommand(command) {
+  if (!CLOUD_URL || !CLOUD_TOKEN) return;
+  try {
+    await fetch(`${CLOUD_URL}/command`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${CLOUD_TOKEN}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(command)
     });
   } catch {
     // The local app must continue operating if the hosted relay is unavailable.
@@ -189,6 +211,14 @@ app.whenReady().then(() => {
     return games.snapshot();
   });
   ipcMain.handle('log:clear', () => games.clearLog());
+
+  ipcMain.handle('overlay:toggle', () => {
+    overlayHidden = !overlayHidden;
+    const command = { type: 'set-visibility', hidden: overlayHidden };
+    broadcastOverlayCommand(command);
+    publishCloudCommand(command);
+    return overlayHidden;
+  });
 
   ipcMain.handle('window:fullscreen', () => {
     if (!win) return false;
