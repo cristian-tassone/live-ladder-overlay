@@ -171,7 +171,7 @@ body { color: var(--ink); font-family: var(--font); font-stretch: condensed; fon
   position: absolute;
   left: 72px;
   top: 620px;
-  width: 320px;
+  width: 301px;
   filter: drop-shadow(0 12px 24px rgba(0,0,0,0.65));
 }
 .ladder-graphic-head {
@@ -285,6 +285,12 @@ body { color: var(--ink); font-family: var(--font); font-stretch: condensed; fon
 .logo-cell:has(.is-missing) .logo-fallback { display: block; }
 .team-cell { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .team-cell > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ladder-graphic-row.is-ycw .team-cell > span:first-child {
+  flex: 0 0 3.2ch;
+  min-width: 3.2ch;
+  overflow: visible;
+  text-overflow: clip;
+}
 .ladder-graphic-row > span:nth-child(3) {
   overflow: hidden;
   text-overflow: ellipsis;
