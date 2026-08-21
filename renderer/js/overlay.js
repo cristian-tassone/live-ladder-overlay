@@ -2,6 +2,25 @@ const rowsHost = document.querySelector('#overlay-rows');
 const entries = new Map();
 let seeded = false;
 
+function setOverlayVisibility(hidden) {
+  const graphic = document.querySelector('.ladder-graphic');
+  if (!graphic) return;
+  if (hidden) {
+    graphic.classList.remove('is-revealing');
+    document.body.classList.add('is-hidden');
+    return;
+  }
+  document.body.classList.remove('is-hidden');
+  graphic.classList.remove('is-revealing');
+  void graphic.offsetWidth;
+  graphic.classList.add('is-revealing');
+  setTimeout(() => graphic.classList.remove('is-revealing'), 520);
+}
+
+function handleOverlayCommand(command) {
+  if (command?.type === 'set-visibility') setOverlayVisibility(!!command.hidden);
+}
+
 function displayName(name) {
   return String(name || '')
     .replace(/\s+(FNC|FC|AFC|JFC)\b/gi, '')
@@ -203,11 +222,16 @@ function render(snapshot) {
 
 if (window.api?.onState) {
   window.api.onState(({ snapshot }) => render(snapshot));
+  window.api.overlay?.onCommand(handleOverlayCommand);
   window.api.getState().then(render);
 } else {
   fetch('/state').then((response) => response.json()).then(render);
   const stream = new EventSource('/events');
   stream.addEventListener('message', (event) => {
-    try { render(JSON.parse(event.data).snapshot); } catch { /* reconnect may be incomplete */ }
+    try {
+      const payload = JSON.parse(event.data);
+      if (payload.snapshot) render(payload.snapshot);
+      if (payload.command) handleOverlayCommand(payload.command);
+    } catch { /* reconnect may be incomplete */ }
   });
 }
